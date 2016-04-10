@@ -15,77 +15,16 @@ public class Btree {
 	}
 	
 	
-	public void index(int n){
-		// index's number less than M, the root is viewed like a leaf
-		if(n<=order){
-			for(int i=0; i<n; i++){
-				ArrayList<Integer> tempkey = new ArrayList<Integer>();
-				tempkey.add(i);
-				root.setkeys(tempkey);
-			}
-			
-		}
-		
-		else{
-			int keyup = n/order;
-			int tkey = 0;
-			while(tkey+keyup<n){
-				root.getkeys().add(keyup);
-				
-				range[0] = tkey;
-				range[1] = tkey+keyup-1;
-				if(keyup<=order){
-					Node newnode = new Node(true, false);
-					newnode.setfather(root);
-					root.getsons().add(newnode);
-					root.getkeys().add(tkey);
-					index(range, newnode);
-				}
-				else{
-					Node newnode = new Node(false, false);
-					newnode.setfather(root);
-					root.getsons().add(newnode);
-					root.getkeys().add(tkey);
-					index(range, newnode);
-				}
-				tkey+=keyup;
-				
-			}
-			root.getkeys().add(keyup);
-			
-			range[0] = tkey;
-			range[1] = n;
-			if(keyup<=order){
-				Node newnode = new Node(true, false);
-				newnode.setfather(root);
-				root.getsons().add(newnode);
-				root.getkeys().add(tkey);
-				index(range, newnode);
-			}
-			else{
-				Node newnode = new Node(false, false);
-				newnode.setfather(root);
-				root.getsons().add(newnode);
-				root.getkeys().add(tkey);
-				index(range, newnode);
-			}
-			
-			
-		}
-			
-		
-		
-	}
-	
 	public void index(int[] range, Node node){
 		int ran = range[1]-range[0];
-		
-		if(node.isleaf){
+		if(ran<=order){
 			for(int i=0; i<ran; i++){
 				ArrayList<Integer> tempkey = new ArrayList<Integer>();
 				tempkey.add(i);
 				node.setkeys(tempkey);
+				node.isleaf = true;
 			}
+			
 		}
 		
 		else{
@@ -113,7 +52,7 @@ public class Btree {
 				tkey+=keyup;
 				
 			}
-			root.getkeys().add(keyup);
+			node.getkeys().add(keyup);
 			
 			range[0] = tkey;
 			range[1] = ran;
@@ -134,11 +73,32 @@ public class Btree {
 			
 			
 		}
+			
+		
+		
 	}
 	
-	public Node lookup(int key){
+	
+	public void lookup(int key, Node node){
+		if(node.isleaf==true){
+			System.out.println(key + " matchs " + node.data);
+		}
 		
 		
-		return null;
+		else if(key>=node.getkeys().get(node.keysize()-1)){
+			lookup(key, node.getsons().get(node.keysize()-1));
+		}
+		
+		else{
+			for(int i=0;i<node.keysize();i++){
+				if(key<node.getkeys().get(i))
+					lookup(key, node.getsons().get(i-1));
+				
+			}
+			
+		}
+			
+			
+		
 	}
 }

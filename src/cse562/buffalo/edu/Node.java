@@ -56,7 +56,9 @@ public class Node {
 	}
 	
 	
-	
+	public int keysize(){
+		return this.getkeys().size();
+	}
 
 	
 }
