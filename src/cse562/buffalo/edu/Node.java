@@ -13,6 +13,7 @@ public class Node {
 	
 	public Node(boolean isleaf){
 		this.isleaf = isleaf;
+		keys = new ArrayList<Integer>();
 		data = new Object();
 		if(!isleaf)
 			sons = new ArrayList<Node>();

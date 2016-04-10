@@ -5,9 +5,10 @@ import java.util.ArrayList;
 public class Btree {
 	int order;
 	Node root;
-	int[] range = new int[2];
+	
 	
 	public Btree(int order){
+		this.root = new Node(false, true);
 		this.order = order;// M 
 		this.root.setfather(null);
 		this.root.setkeys(new ArrayList<Integer>());
@@ -16,12 +17,11 @@ public class Btree {
 	
 	
 	public void index(int[] range, Node node){
-		int ran = range[1]-range[0];
+		int ran = range[1]-range[0]+1;
 		if(ran<=order){
-			for(int i=0; i<ran; i++){
-				ArrayList<Integer> tempkey = new ArrayList<Integer>();
-				tempkey.add(i);
-				node.setkeys(tempkey);
+			for(int i=range[0]; i<=range[1]; i++){
+				node.keys.add(i);
+				
 				node.isleaf = true;
 			}
 			
@@ -29,46 +29,55 @@ public class Btree {
 		
 		else{
 			int keyup = ran/order;
-			int tkey = 0;
-			while(tkey+keyup<ran){
-				node.getkeys().add(keyup);
+			
+			int tkey = range[0];
+			while(tkey+keyup<=range[1]-ran%order){
 				
-				range[0] = tkey;
-				range[1] = tkey+keyup-1;
-				if(keyup<=order){
+				
+				int[] rangec = new int[2];
+				rangec[0] = tkey;
+				if(ran%order==0)
+					rangec[1] = tkey+keyup-1;
+				else
+					rangec[1] = tkey+keyup;
+				if(keyup*order>=ran){
+					
 					Node newnode = new Node(true, false);
 					newnode.setfather(node);
-					node.getsons().add(newnode);
-					node.getkeys().add(tkey);
-					index(range, newnode);
+					node.sons.add(newnode);
+					node.keys.add(tkey);
+					index(rangec, newnode);
 				}
 				else{
 					Node newnode = new Node(false, false);
 					newnode.setfather(node);
-					node.getsons().add(newnode);
-					node.getkeys().add(tkey);
-					index(range, newnode);
+					node.sons.add(newnode);
+					node.keys.add(tkey);
+					index(rangec, newnode);
 				}
-				tkey+=keyup;
+				if(ran%order==0)
+					tkey+=keyup;
+				else
+					tkey+=keyup+1;
 				
 			}
-			node.getkeys().add(keyup);
 			
-			range[0] = tkey;
-			range[1] = ran;
+			int[] rangec = new int[2];
+			rangec[0] = tkey;
+			rangec[1] = range[1];
 			if(keyup<=order){
 				Node newnode = new Node(true, false);
 				newnode.setfather(node);
-				node.getsons().add(newnode);
-				node.getkeys().add(tkey);
-				index(range, newnode);
+				node.sons.add(newnode);
+				node.keys.add(tkey);
+				index(rangec, newnode);
 			}
 			else{
 				Node newnode = new Node(false, false);
 				newnode.setfather(node);
-				node.getsons().add(newnode);
-				node.getkeys().add(tkey);
-				index(range, newnode);
+				node.sons.add(newnode);
+				node.keys.add(tkey);
+				index(rangec, newnode);
 			}
 			
 			
