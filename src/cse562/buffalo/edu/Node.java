@@ -7,11 +7,56 @@ public class Node {
 	Node father;
 	ArrayList<Node> sons;
 	ArrayList<Integer> keys;
+	Object data;
+	boolean isleaf;
+	boolean isroot;
 	
-	public Node(int order) {
-		this.sons = new ArrayList<Node>(order);
-		this.keys = new ArrayList<Integer>(order - 1);
+	public Node(boolean isleaf){
+		this.isleaf = isleaf;
+		data = new Object();
+		if(!isleaf)
+			sons = new ArrayList<Node>();
 	}
+	
+	public Node(boolean isleaf, boolean isroot){
+		this(isleaf);
+		this.isroot = isroot;
+	}
+	
+	public Node getfather(){
+		return father;
+	}
+	
+	public void setfather(Node father){
+		this.father = father;
+	}
+	
+	public ArrayList<Node> getsons(){
+		return sons;
+	}
+	
+	public void setsons(ArrayList<Node> sons){
+		this.sons = sons;
+	}
+	
+	public ArrayList<Integer> getkeys(){
+		return keys;
+	}
+	
+	public void setkeys(ArrayList<Integer> keys){
+		this.keys = keys;
+	}
+	
+	public Object getdata(){
+		return data;
+	}
+	
+	public void setdata(Object data){
+		this.data =data;
+	}
+	
+	
+	
 
 	
 }
