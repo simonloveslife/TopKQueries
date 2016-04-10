@@ -52,7 +52,7 @@ public class Btree {
 				
 			}
 			root.getkeys().add(keyup);
-			int[] range = new int[2];
+			
 			range[0] = tkey;
 			range[1] = n;
 			if(keyup<=order){
@@ -78,7 +78,62 @@ public class Btree {
 	}
 	
 	public void index(int[] range, Node node){
+		int ran = range[1]-range[0];
 		
+		if(node.isleaf){
+			for(int i=0; i<ran; i++){
+				ArrayList<Integer> tempkey = new ArrayList<Integer>();
+				tempkey.add(i);
+				node.setkeys(tempkey);
+			}
+		}
+		
+		else{
+			int keyup = ran/order;
+			int tkey = 0;
+			while(tkey+keyup<ran){
+				node.getkeys().add(keyup);
+				
+				range[0] = tkey;
+				range[1] = tkey+keyup-1;
+				if(keyup<=order){
+					Node newnode = new Node(true, false);
+					newnode.setfather(node);
+					node.getsons().add(newnode);
+					node.getkeys().add(tkey);
+					index(range, newnode);
+				}
+				else{
+					Node newnode = new Node(false, false);
+					newnode.setfather(node);
+					node.getsons().add(newnode);
+					node.getkeys().add(tkey);
+					index(range, newnode);
+				}
+				tkey+=keyup;
+				
+			}
+			root.getkeys().add(keyup);
+			
+			range[0] = tkey;
+			range[1] = ran;
+			if(keyup<=order){
+				Node newnode = new Node(true, false);
+				newnode.setfather(node);
+				node.getsons().add(newnode);
+				node.getkeys().add(tkey);
+				index(range, newnode);
+			}
+			else{
+				Node newnode = new Node(false, false);
+				newnode.setfather(node);
+				node.getsons().add(newnode);
+				node.getkeys().add(tkey);
+				index(range, newnode);
+			}
+			
+			
+		}
 	}
 	
 	public Node lookup(int key){
