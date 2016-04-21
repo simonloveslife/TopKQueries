@@ -7,14 +7,14 @@ public class Node {
 	Node father;
 	ArrayList<Node> sons;
 	ArrayList<Integer> keys;
-	Object data;
+	ArrayList<Object> datas;
 	boolean isleaf;
 	boolean isroot;
 	
 	public Node(boolean isleaf){
 		this.isleaf = isleaf;
 		keys = new ArrayList<Integer>();
-		data = new Object();
+		datas = new ArrayList<Object>();
 		if(!isleaf)
 			sons = new ArrayList<Node>();
 	}
@@ -49,11 +49,11 @@ public class Node {
 	}
 	
 	public Object getdata(){
-		return data;
+		return datas;
 	}
 	
 	public void setdata(Object data){
-		this.data =data;
+		this.datas.add(data);
 	}
 	
 	

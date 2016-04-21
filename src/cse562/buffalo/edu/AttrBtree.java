@@ -1,13 +1,15 @@
 package cse562.buffalo.edu;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 
-public class Btree {
+public class AttrBtree {
 	int order;
 	Node root;
 	
 	
-	public Btree(int order){
+	public AttrBtree(int order){
 		this.root = new Node(false, true);
 		this.order = order;// M 
 		this.root.setfather(null);
@@ -16,15 +18,18 @@ public class Btree {
 	}
 	
 	
-	public void index(int[] range, Node node){
-		int ran = range[1]-range[0]+1;
+	
+	public void index(int[] element, Node node){
+		
+		Arrays.sort(element);
+		
+		int ran = element.length;
 		if(ran<=order){
-			for(int i=range[0]; i<=range[1]; i++){
-				node.keys.add(i);
+			for(int e: element){
+				node.keys.add(e);
 				
 				
 			}
-			
 			node.isleaf = true;
 			
 		}
@@ -32,63 +37,55 @@ public class Btree {
 		else{
 			int keyup = ran/order;
 			
-			int tkey = range[0];
-			while(tkey+keyup<=range[1]-ran%order){
+			int h_index = 0;
+			
+			while(h_index+keyup<ran-ran%order){
 				
+				int[] div = new int[keyup];
+				for(int i=0; i<keyup; i++){
+					div[i] = element[i+h_index];
+					
+				}
 				
-				int[] rangec = new int[2];
-				rangec[0] = tkey;
-//				System.out.println("ran: " + ran);
-//				System.out.println("order: " + order);
-//				System.out.println("rkeyup: " + keyup);
-				
-				if(ran%order==0)
-					rangec[1] = tkey+keyup-1;
-				else
-					rangec[1] = tkey+keyup;
-				if(rangec[1]-rangec[0]+1<=order){
-//					
-//					System.out.println(rangec[0]);
-//					System.out.println(rangec[1]);
+				if(div.length>=ran){
 					
 					Node newnode = new Node(true, false);
 					newnode.setfather(node);
 					node.sons.add(newnode);
-					node.keys.add(tkey);
-					index(rangec, newnode);
+					node.keys.add(element[h_index]);
+					index(div, newnode);
 				}
 				else{
 					Node newnode = new Node(false, false);
 					newnode.setfather(node);
 					node.sons.add(newnode);
-					node.keys.add(tkey);
-					index(rangec, newnode);
+					node.keys.add(element[h_index]);
+					index(div, newnode);
 				}
-				if(ran%order==0)
-					tkey+=keyup;
-				else
-					tkey+=keyup+1;
+				
+				h_index += keyup;
 				
 			}
 			
-			int[] rangec = new int[2];
-			rangec[0] = tkey;
-			rangec[1] = range[1];
-			if(rangec[1]-rangec[0]+1<=order){
+			int[] left = new int[ran-h_index];
+			for(int i=0; i<left.length; i++){
+				left[i] = element[i+h_index];
+				
+			}
+			if(left.length<=order){
 				Node newnode = new Node(true, false);
 				newnode.setfather(node);
 				node.sons.add(newnode);
-				node.keys.add(tkey);
-				index(rangec, newnode);
+				node.keys.add(element[h_index]);
+				index(left, newnode);
 			}
 			else{
 				Node newnode = new Node(false, false);
 				newnode.setfather(node);
 				node.sons.add(newnode);
-				node.keys.add(tkey);
-				index(rangec, newnode);
+				node.keys.add(element[h_index]);
+				index(left, newnode);
 			}
-			
 			
 		}
 			
@@ -98,31 +95,36 @@ public class Btree {
 	
 	
 	public void lookup(int key, Node node){
+		
+//		for(int k: node.getkeys())
+//			System.out.println("key: "+ k);
+//		
+//		System.out.println(" ");
+		
+		
+		
 		if(node.isleaf==true){
 			for(int i=0; i<node.keys.size(); i++){
 				System.out.println(node.keys.get(i));
 				if(node.keys.get(i)==key){
 					System.out.println("found");
 //					System.out.println(node.datas.get(i));
-					return;
+					
 						}
 			}
 		}
 		
 		
-		
 		else if(key>=node.getkeys().get(node.keysize()-1)){
-			
 			lookup(key, node.getsons().get(node.keysize()-1));
+			
 		}
 		
 		else{
 			
-			for(int i=0;i<node.keysize();i++){
-				if(key<node.getkeys().get(i)){
-					lookup(key, node.getsons().get(i-1));
-					break;
-					}
+			for(int i=0;i<node.keysize()-1;i++){
+				if(key>=node.getkeys().get(i)&&key<node.getkeys().get(i+1))
+					lookup(key, node.getsons().get(i));
 				
 			}
 			
@@ -131,4 +133,6 @@ public class Btree {
 			
 		
 	}
+	
+
 }
