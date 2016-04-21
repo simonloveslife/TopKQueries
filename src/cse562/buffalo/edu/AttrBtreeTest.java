@@ -45,7 +45,10 @@ public class AttrBtreeTest {
 		int[] element = new int[n];
 		for(int i=0; i<50; i++)
 			element[i] = i;
+		
+		element[40] = 25;
 		Attrbtree.index(element, Attrbtree.root);
+//		test(Attrbtree.root);
 		Attrbtree.lookup(25, Attrbtree.root);
 		
 		
