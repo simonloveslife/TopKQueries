@@ -112,10 +112,12 @@ public class Btree {
 		
 		
 		else if(key>=node.getkeys().get(node.keysize()-1)){
+			
 			lookup(key, node.getsons().get(node.keysize()-1));
 		}
 		
 		else{
+			
 			for(int i=0;i<node.keysize();i++){
 				if(key<node.getkeys().get(i)){
 					lookup(key, node.getsons().get(i-1));

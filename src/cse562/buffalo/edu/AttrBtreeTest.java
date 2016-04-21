@@ -5,6 +5,10 @@ public class AttrBtreeTest {
 	private static void test(Node node){
 		if(!node.isleaf){
 			for(Node son: node.sons){
+				
+				
+				
+				
 				test(son);
 				
 				
@@ -25,15 +29,24 @@ public class AttrBtreeTest {
 	public static void main(String[] args){
 		
 		
+//		AttrBtree Attrbtree = new AttrBtree(4);
+//		int n = 10;
+//		int[] element = new int[n];
+//		for(int i=0; i<n; i++)
+//			element[i] = (int)(Math.random()*100);
+//		
+//		
+//		Attrbtree.index(element, Attrbtree.root);
+//		test(Attrbtree.root);
+		
+		
 		AttrBtree Attrbtree = new AttrBtree(4);
-		int n = 10;
+		int n = 50;
 		int[] element = new int[n];
-		for(int i=0; i<n; i++)
-			element[i] = (int)(Math.random()*100);
-		
-		
+		for(int i=0; i<50; i++)
+			element[i] = i;
 		Attrbtree.index(element, Attrbtree.root);
-		test(Attrbtree.root);
+		Attrbtree.lookup(25, Attrbtree.root);
 		
 		
 		

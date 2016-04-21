@@ -76,14 +76,14 @@ public class AttrBtree {
 				Node newnode = new Node(true, false);
 				newnode.setfather(node);
 				node.sons.add(newnode);
-				node.keys.add(h_index);
+				node.keys.add(element[h_index]);
 				index(left, newnode);
 			}
 			else{
 				Node newnode = new Node(false, false);
 				newnode.setfather(node);
 				node.sons.add(newnode);
-				node.keys.add(h_index);
+				node.keys.add(element[h_index]);
 				index(left, newnode);
 			}
 			
@@ -95,19 +95,36 @@ public class AttrBtree {
 	
 	
 	public void lookup(int key, Node node){
+		
+//		for(int k: node.getkeys())
+//			System.out.println("key: "+ k);
+//		
+//		System.out.println(" ");
+		
+		
+		
 		if(node.isleaf==true){
-			System.out.println(key + " matchs " + node.data);
+			for(int i=0; i<node.keys.size(); i++){
+				System.out.println(node.keys.get(i));
+				if(node.keys.get(i)==key){
+					System.out.println("found");
+//					System.out.println(node.datas.get(i));
+					return;
+						}
+			}
 		}
 		
 		
 		else if(key>=node.getkeys().get(node.keysize()-1)){
 			lookup(key, node.getsons().get(node.keysize()-1));
+			
 		}
 		
 		else{
-			for(int i=0;i<node.keysize();i++){
-				if(key<node.getkeys().get(i))
-					lookup(key, node.getsons().get(i-1));
+			
+			for(int i=0;i<node.keysize()-1;i++){
+				if(key>=node.getkeys().get(i)&&key<node.getkeys().get(i+1))
+					lookup(key, node.getsons().get(i));
 				
 			}
 			
