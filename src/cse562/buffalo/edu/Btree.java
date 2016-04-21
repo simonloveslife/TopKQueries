@@ -22,8 +22,10 @@ public class Btree {
 			for(int i=range[0]; i<=range[1]; i++){
 				node.keys.add(i);
 				
-				node.isleaf = true;
+				
 			}
+			
+			node.isleaf = true;
 			
 		}
 		
@@ -97,8 +99,16 @@ public class Btree {
 	
 	public void lookup(int key, Node node){
 		if(node.isleaf==true){
-			System.out.println(key + " matchs " + node.data);
+			for(int i=0; i<node.keys.size(); i++){
+				System.out.println(node.keys.get(i));
+				if(node.keys.get(i)==key){
+					System.out.println("found");
+//					System.out.println(node.datas.get(i));
+					return;
+						}
+			}
 		}
+		
 		
 		
 		else if(key>=node.getkeys().get(node.keysize()-1)){
@@ -107,8 +117,10 @@ public class Btree {
 		
 		else{
 			for(int i=0;i<node.keysize();i++){
-				if(key<node.getkeys().get(i))
+				if(key<node.getkeys().get(i)){
 					lookup(key, node.getsons().get(i-1));
+					break;
+					}
 				
 			}
 			
