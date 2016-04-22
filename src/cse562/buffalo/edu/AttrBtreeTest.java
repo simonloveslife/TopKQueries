@@ -47,9 +47,9 @@ public class AttrBtreeTest {
 			element[i] = i;
 		
 		element[40] = 25;
-		Attrbtree.index(element, Attrbtree.root);
+//		Attrbtree.index(element, Attrbtree.root);
 //		test(Attrbtree.root);
-		Attrbtree.lookup(25, Attrbtree.root);
+//		Attrbtree.lookup(25, Attrbtree.root);
 		
 		
 		

@@ -29,7 +29,7 @@ public class btreeTest {
 		int[] range = new int[2];
 		range[0] = 0;
 		range[1] = n;
-		btree.index(range, btree.root);
+//		btree.index(range, btree.root);
 //		test(btree.root);
 		
 		
@@ -42,8 +42,8 @@ public class btreeTest {
 //			System.out.println(i);
 //		}
 		
-		for(int i=0; i<=50; i++)
-			btree.lookup(i, btree.root);
+//		for(int i=0; i<=50; i++)
+//			btree.lookup(i, btree.root);
 		
 		
 		

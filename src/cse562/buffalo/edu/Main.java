@@ -47,6 +47,11 @@ class Table {
 		}
 		return -1;
 	}
+	
+	public List<String> getAttName(){
+		return attName;
+		
+	}
 
 	public LinkedList<List<String>> getValueList() {
 		return valueList;
@@ -72,8 +77,6 @@ public class Main {
 		String line = in.readLine();
 		String sp[] = line.split(" ");
 
-		sp[2] = sp[2].substring(1, sp[2].length() - 1);
-		String[] condition = sp[2].split(",");
 
 		if (sp[0].equals("init")) {
 			String tables[] = sp[1].split(",");
@@ -103,6 +106,9 @@ public class Main {
 //			}
 
 			if (sp.length == 3) {
+
+				sp[2] = sp[2].substring(1, sp[2].length() - 1);
+				String[] condition = sp[2].split(",");
 				for (int i = 0; i < condition.length; i++) {
 //					System.out.println(condition[i]);
 					Join newjoin = new Join();
@@ -112,18 +118,62 @@ public class Main {
 			System.out.println("READ SUCCESS");
 			// for (int i = 0; i < tableList.get(0).getValueList().size(); i++)
 			// {
-			for (int j = 0; j < tableList.get(0).getValueList().size(); j++) {
-				System.out.println(tableList.get(0).getValueList().get(j).get(0) + "*"
-						+ tableList.get(0).getValueList().get(j).get(1));
-			}
-			for (int j = 0; j < tableList.get(1).getValueList().size(); j++) {
-				System.out.println(tableList.get(1).getValueList().get(j).get(0) + "*"
-						+ tableList.get(1).getValueList().get(j).get(1));
-			}
-			for (int j = 0; j < tableList.get(2).getValueList().size(); j++) {
-				System.out.println(tableList.get(2).getValueList().get(j).get(0) + "*"
-						+ tableList.get(2).getValueList().get(j).get(1));
-			}
+//			for (int j = 0; j < tableList.get(0).getValueList().size(); j++) {
+//				System.out.println(tableList.get(0).getValueList().get(j).get(0) + "*"
+//						+ tableList.get(0).getValueList().get(j).get(1));
+//			}
+//			for (int j = 0; j < tableList.get(1).getValueList().size(); j++) {
+//				System.out.println(tableList.get(1).getValueList().get(j).get(0) + "*"
+//						+ tableList.get(1).getValueList().get(j).get(1));
+//			}
+//			for (int j = 0; j < tableList.get(2).getValueList().size(); j++) {
+//				System.out.println(tableList.get(2).getValueList().get(j).get(0) + "*"
+//						+ tableList.get(2).getValueList().get(j).get(1));
+//			}
+			
+			int datanum = tableList.get(0).getValueList().size();
+			
+			Btree idTree = new Btree(4);
+			int[] range = new int[2];
+			range[0] = 0;
+			range[1] = datanum-1;
+			idTree.index(range, tableList.get(0).getValueList(), idTree.root);
+			
+			int idquery = 2;
+			idTree.lookup(idquery-1, idTree.root, tableList.get(0).getAttName());
+			
+			
+			LinkedList<AttrBtree> attrl = new LinkedList<AttrBtree>();
+				for(int i=1; i<tableList.get(0).getAttName().size(); i++){
+					AttrElement[] attr = new AttrElement[datanum];
+					for(int n=0; n<datanum; n++)
+						attr[n] = new AttrElement();
+				
+					
+					
+					for(int j=0; j<datanum; j++){
+					
+					
+						int ar = Integer.parseInt(tableList.get(0).getValueList().get(j).get(i));
+						attr[j].set_att(ar);
+						attr[j].set_index(j);
+						
+						
+					}
+					
+					AttrBtree Attrbtree = new AttrBtree(4);
+					Attrbtree.index(attr, Attrbtree.root);
+					
+					attrl.add(Attrbtree);
+					
+				}
+				
+				attrl.get(0).lookup(8, attrl.get(0).root);
+				
+			
+				
+				
+			
 			
 			// System.out.print("\n");
 			// }
