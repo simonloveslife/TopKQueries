@@ -1,6 +1,8 @@
 package cse562.buffalo.edu;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Btree {
 	int order;
@@ -16,11 +18,13 @@ public class Btree {
 	}
 	
 	
-	public void index(int[] range, Node node){
+	public void index(int[] range, LinkedList<List<String>> l, Node node){
 		int ran = range[1]-range[0]+1;
 		if(ran<=order){
 			for(int i=range[0]; i<=range[1]; i++){
 				node.keys.add(i);
+				node.datas.add(l.get(i));
+				
 				
 				
 			}
@@ -55,14 +59,14 @@ public class Btree {
 					newnode.setfather(node);
 					node.sons.add(newnode);
 					node.keys.add(tkey);
-					index(rangec, newnode);
+					index(rangec, l, newnode);
 				}
 				else{
 					Node newnode = new Node(false, false);
 					newnode.setfather(node);
 					node.sons.add(newnode);
 					node.keys.add(tkey);
-					index(rangec, newnode);
+					index(rangec, l, newnode);
 				}
 				if(ran%order==0)
 					tkey+=keyup;
@@ -79,14 +83,14 @@ public class Btree {
 				newnode.setfather(node);
 				node.sons.add(newnode);
 				node.keys.add(tkey);
-				index(rangec, newnode);
+				index(rangec, l, newnode);
 			}
 			else{
 				Node newnode = new Node(false, false);
 				newnode.setfather(node);
 				node.sons.add(newnode);
 				node.keys.add(tkey);
-				index(rangec, newnode);
+				index(rangec, l, newnode);
 			}
 			
 			
@@ -97,13 +101,20 @@ public class Btree {
 	}
 	
 	
-	public void lookup(int key, Node node){
+	public void lookup(int key, Node node, List<String> name){
 		if(node.isleaf==true){
 			for(int i=0; i<node.keys.size(); i++){
-				System.out.println(node.keys.get(i));
+				
 				if(node.keys.get(i)==key){
-					System.out.println("found");
-//					System.out.println(node.datas.get(i));
+					System.out.println("found id");
+					
+					
+					
+					for(int j=0; j<node.datas.get(i).size(); j++){
+							System.out.println(name.get(j)+": "+node.datas.get(i).get(j));
+							
+						
+					}
 					return;
 						}
 			}
@@ -113,14 +124,14 @@ public class Btree {
 		
 		else if(key>=node.getkeys().get(node.keysize()-1)){
 			
-			lookup(key, node.getsons().get(node.keysize()-1));
+			lookup(key, node.getsons().get(node.keysize()-1),  name);
 		}
 		
 		else{
 			
 			for(int i=0;i<node.keysize();i++){
 				if(key<node.getkeys().get(i)){
-					lookup(key, node.getsons().get(i-1));
+					lookup(key, node.getsons().get(i-1), name);
 					break;
 					}
 				

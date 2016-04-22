@@ -1,20 +1,23 @@
 package cse562.buffalo.edu;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class Node {
 	Node father;
 	ArrayList<Node> sons;
 	ArrayList<Integer> keys;
-	ArrayList<Object> datas;
+	ArrayList<List<String>> datas;
 	boolean isleaf;
 	boolean isroot;
+	
+	
 	
 	public Node(boolean isleaf){
 		this.isleaf = isleaf;
 		keys = new ArrayList<Integer>();
-		datas = new ArrayList<Object>();
+		datas = new ArrayList<List<String>>();
 		if(!isleaf)
 			sons = new ArrayList<Node>();
 	}
@@ -52,9 +55,7 @@ public class Node {
 		return datas;
 	}
 	
-	public void setdata(Object data){
-		this.datas.add(data);
-	}
+	
 	
 	
 	public int keysize(){
