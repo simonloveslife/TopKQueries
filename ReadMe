@@ -1,0 +1,3 @@
+This is the final project of CSE562 Databases.
+We are required to implement a TopK query using B-tree and priority queue.
+At then same time, our group implement join function of tables for extra marks. 
